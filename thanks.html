@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - AquaSell</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        // Standardizing the brand colors to match your index.html
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-blue': '#1E3A8A',
+                        'brand-blue-light': '#3B82F6',
+                        'brand-green': '#10B981',
+                        'brand-green-light': '#A7F3D0',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans bg-gray-50 text-gray-900 flex flex-col min-h-screen">
+
+    <header class="bg-white shadow-sm">
+        <nav class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="text-3xl font-bold text-brand-blue">
+                AquaSell
+            </a>
+        </nav>
+    </header>
+
+    <main class="flex-grow container mx-auto px-6 flex items-center justify-center py-12">
+        <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-10 text-center border-t-8 border-brand-green">
+            
+            <div class="w-20 h-20 bg-brand-green-light rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-12 h-12 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+
+            <h1 class="text-3xl font-bold text-gray-800 mb-4">Submission Successful!</h1>
+            
+            <p class="text-gray-600 mb-8 leading-relaxed">
+                Thank you for choosing <strong>AquaSell</strong>. Your details have been saved to our database. Our collection team will review your location and contact you shortly.
+            </p>
+
+            <div class="space-y-4">
+                <a href="index.html" class="block w-full bg-brand-blue hover:bg-brand-blue-light text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105 shadow-md">
+                    Back to Home
+                </a>
+                <p class="text-sm text-gray-500">
+                    Need help? <a href="https://2431648.github.io/Contact-Me/" class="text-brand-blue-light hover:underline">Contact Support</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-100 py-6">
+        <div class="container mx-auto text-center text-gray-500 text-sm">
+            &copy; 2025 AquaSell. All rights reserved.
+        </div>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaSell - Waste Water Recycling</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="aquasell.css">
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUH4-e7eGcwZBUcJb3jpmKmUClyVgJjOo&callback=initMap"
+        async defer></script>
+
+    <script src="aquasell.js"></script>
+
+    <script>
+        // Tailwind configuration
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'brand-blue': '#1E3A8A', // Dark Blue
+                        'brand-blue-light': '#3B82F6', // Light Blue
+                        'brand-green': '#10B981', // Green
+                        'brand-green-light': '#A7F3D0', // Light Green
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="font-sans bg-gray-50 text-gray-900">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
+            <a href="#" class="nav-link text-3xl font-bold text-brand-blue" data-target="page-landing">
+                AquaSell
+            </a>
+
+            <div class="hidden md:flex space-x-6">
+                <a href="#" class="nav-link text-gray-600 hover:text-brand-blue-light font-medium"
+                    data-target="page-landing">Home</a>
+                <a href="#" class="nav-link text-gray-600 hover:text-brand-blue-light font-medium"
+                    data-target="page-seller-login">Seller Portal</a>
+                <a href="#" class="nav-link text-gray-600 hover:text-brand-blue-light font-medium"
+                    data-target="page-buyer-login">Buyer Portal</a>
+            </div>
+
+            <div class="md:hidden">
+                <button class="text-gray-600 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8 min-h-screen">
+
+        <section id="page-landing" class="page-section">
+            <div
+                class="bg-gradient-to-r from-brand-blue to-brand-blue-light text-white rounded-lg shadow-xl p-8 md:p-16 text-center overflow-hidden relative">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Paani ki bachat, Kal ki hifazat.</h1>
+                <h1 class="text-4xl md:text-5xl font-bold mb-4"> (Saving water, protecting tomorrow.)</h1>
+                <p class="text-lg md:text-xl text-blue-100 mb-8 max-w-2xl mx-auto">AquaSell connects homes that produce
+                    waste water (from ACs, RO purifiers) with businesses that need it. Turn your waste into a resource.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button
+                        class="nav-link bg-brand-green hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg transform transition-transform hover:scale-105"
+                        data-target="page-seller-signup">
+                        Start Selling Water
+                    </button>
+                    <button
+                        class="nav-link bg-white text-brand-blue hover:bg-gray-100 font-bold py-3 px-8 rounded-lg shadow-lg transform transition-transform hover:scale-105"
+                        data-target="page-buyer-signup">
+                        Start Buying Water
+                    </button>
+                </div>
+                <div class="absolute -bottom-16 -left-16 w-32 h-32 bg-white/10 rounded-full"></div>
+                <div class="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full"></div>
+            </div>
+
+            <div class="my-16">
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Why Choose AquaSell?</h2>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 rounded-lg shadow-md text-center border-t-4 border-brand-green">
+                        <svg class="w-16 h-16 mx-auto mb-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#0ea5e9" d="M12 2C8 8 6 10 6 14a6 6 0 0012 0c0-4-2-6-6-12z" />
+                        </svg>
+                        <h3 class="text-xl font-bold mb-2">Save Fresh Water</h3>
+                        <p class="text-gray-600">Saving valuable fresh water by using waste water for non-potable needs.
+                        </p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-md text-center border-t-4 border-brand-blue-light">
+                        <svg class="w-16 h-16 mx-auto mb-4" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <text x="12" y="16" text-anchor="middle" dominant-baseline="middle" font-size="18"
+                                font-weight="bold" font-family="Arial, sans-serif" fill="green">₹</text>
+                        </svg>
+                        <h3 class="text-xl font-bold mb-2">Financial Benefits</h3>
+                        <p class="text-gray-600">Provides financial benefits to both sellers who earn and buyers who
+                            save.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-lg shadow-md text-center border-t-4 border-brand-green">
+                        <svg class="w-16 h-16 text-sky-500 mx-auto mb-4" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.653-.124-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.653.124-1.283.356-1.857m0 0a3.001 3.001 0 015.288 0M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 6a3 3 0 10-6 0 3 3 0 006 0zM7 12a3 3 0 11-6 0 3 3 0 016 0z">
+                            </path>
+                        </svg>
+                        </svg>
+                        <h3 class="text-xl font-bold mb-2">Create Employment</h3>
+                        <p class="text-gray-600">Generates employment for a good number of people in collection and
+                            delivery.</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="mb-8 flex justify-center">
+                <img src="tag.png" alt="Conserve Water" class="rounded-2xl shadow-lg border-4 border-white/20">
+            </div>
+
+
+            </div>
+        </section>
+
+        <section id="page-seller-login" class="page-section hidden">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-center text-brand-blue mb-6">Seller Login</h2>
+                <form>
+                    <div class="mb-4">
+                        <label for="seller-email-login"
+                            class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="seller-email-login"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue-light"
+                            placeholder="you@example.com">
+                    </div>
+                    <div class="mb-6">
+                        <label for="seller-pass-login"
+                            class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" id="seller-pass-login"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue-light"
+                            placeholder="••••••••">
+                    </div>
+                    <button type="button" id="seller-login-btn"
+                        class="w-full bg-brand-blue hover:bg-brand-blue-light text-white font-bold py-3 px-4 rounded-lg shadow-md transition-colors">
+                        Login as Seller
+                    </button>
+                    <p class="text-sm text-center text-gray-600 mt-4">
+                        Don't have an account?
+                        <a href="#" class="nav-link font-medium text-brand-blue-light hover:underline"
+                            data-target="page-seller-signup">Sign Up</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+
+        <section id="page-seller-signup" class="page-section hidden">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-center text-brand-blue mb-6">Create Seller Account</h2>
+                <form>
+                    <div class="mb-4">
+                        <label for="seller-email-signup"
+                            class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="seller-email-signup"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue-light"
+                            placeholder="you@example.com">
+                    </div>
+                    <div class="mb-4">
+                        <label for="seller-pass-signup"
+                            class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" id="seller-pass-signup"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue-light"
+                            placeholder="Create a password">
+                    </div>
+                    <div class="mb-6">
+                        <label for="seller-pass-confirm" class="block text-sm font-medium text-gray-700 mb-1">Confirm
+                            Password</label>
+                        <input type="password" id="seller-pass-confirm"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue-light"
+                            placeholder="Confirm your password">
+                    </div>
+                    <button type="button" id="seller-signup-btn"
+                        class="w-full bg-brand-green hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-colors">
+                        Create Account
+                    </button>
+                    <p class="text-sm text-center text-gray-600 mt-4">
+                        Already have an account?
+                        <a href="#" class="nav-link font-medium text-brand-blue-light hover:underline"
+                            data-target="page-seller-login">Login</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+
+        <section id="page-seller-home" class="page-section hidden">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Seller Dashboard</h2>
+            <div class="bg-white p-8 rounded-lg shadow-lg">
+                <h3 class="text-xl font-bold text-brand-blue mb-4">Welcome, Seller!</h3>
+                <p class="text-gray-600 mb-6">Manage your details and view your pickup requests here.</p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button
+                        class="nav-link bg-brand-green hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg transform transition-transform hover:scale-105"
+                        data-target="page-seller-form">
+                        Update My Details
+                    </button>
+                    <button id="seller-logout-btn"
+                        class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transform transition-transform hover:scale-105">
+                        Log Out
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="page-seller-form" class="page-section hidden">
+            <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-brand-blue mb-6">Seller Details</h2>
+                <p class="text-gray-600 mb-6">Fill out your details so we can list you as a seller and transfer your
+                    earnings.</p>
+
+                <form id="seller-details-form">
+                    <fieldset class="mb-6">
+                        <legend class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Personal & Pickup Details
+                        </legend>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="mb-4">
+                                <label for="seller-name" class="block text-sm font-medium text-gray-700 mb-1">Full
+                                    Name</label>
+                                <input type="text" id="seller-name"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue-light"
+                                    required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="seller-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone
+                                    Number</label>
+                                <input type="tel" id="seller-phone"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue-light"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="seller-address" class="block text-sm font-medium text-gray-700 mb-1">Full Pickup
+                                Address</label>
+                            <textarea id="seller-address" rows="3"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue-light"
+                                placeholder="Street, Apartment, City, Postal Code" required></textarea>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="mb-6">
+                        <legend class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Bank Details</legend>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="mb-4">
+                                <label for="seller-account" class="block text-sm font-medium text-gray-700 mb-1">Bank
+                                    Account Number</label>
+                                <input type="text" id="seller-account"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue-light"
+                                    required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="seller-ifsc" class="block text-sm font-medium text-gray-700 mb-1">IFSC
+                                    Code</label>
+                                <input type="text" id="seller-ifsc"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-blue-light"
+                                    required>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="mb-6">
+                        <legend class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Set Pickup Location
+                        </legend>
+                        <p class="text-sm text-gray-600 mb-4">Drag the pin to your exact pickup location, or click the
+                            button to use your current location.</p>
+
+                        <div id="seller-map-container"
+                            class="w-full h-80 rounded-lg border border-gray-300 bg-gray-100 flex items-center justify-center text-gray-500">
+                            Loading Map...
+                        </div>
+
+                        <input type="hidden" id="seller-coords" name="seller-coords">
+
+                        <button type="button" id="pin-seller-location"
+                            class="mt-4 w-full bg-brand-blue-light hover:bg-brand-blue text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors">
+                            Pin My Current Location
+                        </button>
+                    </fieldset>
+
+                    <button type="submit"
+                        class="w-full bg-brand-green hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-colors">
+                        Submit My Details
+                    </button>
+                </form>
+            </div>
+        </section>
+
+
+        <section id="page-buyer-login" class="page-section hidden">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-center text-brand-green mb-6">Buyer Login</h2>
+                <form>
+                    <div class="mb-4">
+                        <label for="buyer-email-login"
+                            class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="buyer-email-login"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-green"
+                            placeholder="you@example.com">
+                    </div>
+                    <div class="mb-6">
+                        <label for="buyer-pass-login"
+                            class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" id="buyer-pass-login"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-green"
+                            placeholder="••••••••">
+                    </div>
+                    <button type="button" id="buyer-login-btn"
+                        class="w-full bg-brand-green hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-colors">
+                        Login as Buyer
+                    </button>
+                    <p class="text-sm text-center text-gray-600 mt-4">
+                        Don't have an account?
+                        <a href="#" class="nav-link font-medium text-brand-green hover:underline"
+                            data-target="page-buyer-signup">Sign Up</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+
+        <section id="page-buyer-signup" class="page-section hidden">
+            <div class="max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-center text-brand-green mb-6">Create Buyer Account</h2>
+                <form>
+                    <div class="mb-4">
+                        <label for="buyer-email-signup"
+                            class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" id="buyer-email-signup"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-green"
+                            placeholder="you@example.com">
+                    </div>
+                    <div class="mb-4">
+                        <label for="buyer-pass-signup"
+                            class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                        <input type="password" id="buyer-pass-signup"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-green"
+                            placeholder="Create a password">
+                    </div>
+                    <div class="mb-6">
+                        <label for="buyer-pass-confirm" class="block text-sm font-medium text-gray-700 mb-1">Confirm
+                            Password</label>
+                        <input type="password" id="buyer-pass-confirm"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-green"
+                            placeholder="Confirm your password">
+                    </div>
+                    <button type="button" id="buyer-signup-btn"
+                        class="w-full bg-brand-green hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition-colors">
+                        Create Account
+                    </button>
+                    <p class="text-sm text-center text-gray-600 mt-4">
+                        Already have an account?
+                        <a href="#" class="nav-link font-medium text-brand-green hover:underline"
+                            data-target="page-buyer-login">Login</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+
+        <section id="page-buyer-home" class="page-section hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-3xl font-bold text-gray-800">We'll Contact You Soon!</h3>
+
+                <button id="buyer-logout-btn"
+                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg">
+                    Log Out
+                </button>
+            </div>
+
+            <div id="seller-list-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </section>
+
+        <section id="page-buyer-form" class="page-section hidden">
+            <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold text-brand-green mb-6">Buyer Details</h2>
+                <p class="text-gray-600 mb-6">Fill out your details so we can find sellers for you.</p>
+
+                <form id="buyer-details-form">
+                    <fieldset class="mb-6">
+                        <legend class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Business & Delivery
+                            Details</legend>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="mb-4">
+                                <label for="buyer-name" class="block text-sm font-medium text-gray-700 mb-1">Full Name
+                                    or Business Name</label>
+                                <input type="text" id="buyer-name"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-green"
+                                    required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="buyer-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone
+                                    Number</label>
+                                <input type="tel" id="buyer-phone"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-green"
+                                    required>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="buyer-work-type" class="block text-sm font-medium text-gray-700 mb-1">What will
+                                you use the water for?</label>
+                            <select id="buyer-work-type"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-green"
+                                required>
+                                <option value="">Select a use case...</option>
+                                <option value="Car Washing">Car Washing</option>
+                                <option value="Cloth Washing">Cloth Washing (Laundry)</option>
+                                <option value="Water Park">Water Park</option>
+                                <option value="Utensil Washing">Utensil Washing (Restaurant)</option>
+                                <option value="Gardening">Gardening / Landscaping</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="buyer-water-amount"
+                                class="block text-sm font-medium text-gray-700 mb-1">Estimated Water Needed (in Liters
+                                per day)</label>
+                            <input type="number" id="buyer-water-amount"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-green"
+                                placeholder="e.g., 500" required>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="mb-6">
+                        <legend class="text-xl font-semibold text-gray-700 mb-4 border-b pb-2">Set Delivery Location
+                        </legend>
+                        <p class="text-sm text-gray-600 mb-4">Drag the pin to your exact delivery location, or click the
+                            button to use your current location.</p>
+
+                        <div id="buyer-map-container"
+                            class="w-full h-80 rounded-lg border border-gray-300 bg-gray-100 flex items-center justify-center text-gray-500">
+                            Loading Map...
+                        </div>
+
+                        <input type="hidden" id="buyer-coords" name="buyer-coords">
+
+                        <button type="button" id="pin-buyer-location"
+                            class="mt-4 w-full bg-brand-blue-light hover:bg-brand-blue text-white font-bold py-2 px-4 rounded-lg shadow-md transition-colors">
+                            Pin My Current Location
+                        </button>
+                    </fieldset>
+
+                    <button type="submit"
+                        class="w-full bg-brand-green hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-colors">
+                        Submit Details
+                    </button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+    <section id="page-team" class="page-section my-20">
+        <h2 class="text-3xl font-bold text-center mb-12 dark:text-white">Our Leadership & Team</h2>
+
+        <div class="max-w-6xl mx-auto px-4">
+
+            <div class="flex justify-center mb-16">
+                <div
+                    class="max-w-md w-full bg-gradient-to-b from-brand-blue to-brand-blue-light p-1 rounded-2xl shadow-2xl transform transition-all hover:scale-105">
+                    <div class="bg-white dark:bg-gray-800 p-10 rounded-2xl text-center">
+                        <img src="Dean.png" alt="CEO"
+                            class="w-40 h-40 rounded-full mx-auto mb-6 border-8 border-brand-blue-light object-cover shadow-2xl">
+                        <h3 class="text-3xl font-bold text-brand-blue dark:text-brand-blue-light">DR. APS Bhaduriya</h3>
+                        <p class="text-brand-green text-lg font-bold mb-4 uppercase tracking-widest">Founder & Chief
+                            Executive</p>
+                        <p class="text-gray-600 dark:text-gray-300 italic">"Leading the change for a sustainable and
+                            water-secure future."</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <div
+                    class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center border-t-4 border-brand-green transition-transform hover:-translate-y-2">
+                    <img src="Tarun.jpeg" alt="Team"
+                        class="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-brand-green-light object-cover">
+                    <h4 class="text-lg font-bold dark:text-white">Tarun Kesharwani</h4>
+                    <p class="text-brand-green text-sm font-semibold">Lead Developer</p>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center border-t-4 border-brand-blue-light transition-transform hover:-translate-y-2">
+                    <img src="Diksha.jpeg" alt="Team"
+                        class="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-brand-blue-light object-cover">
+                    <h4 class="text-lg font-bold dark:text-white">Diksha Yadav</h4>
+                    <p class="text-brand-blue-light text-sm font-semibold">Operations Head</p>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center border-t-4 border-brand-green transition-transform hover:-translate-y-2">
+                    <img src="Dev.jpeg" alt="Team"
+                        class="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-brand-green-light object-cover">
+                    <h4 class="text-lg font-bold dark:text-white">Dev Singh</h4>
+                    <p class="text-brand-green text-sm font-semibold">Marketing Manager</p>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center border-t-4 border-brand-blue-light transition-transform hover:-translate-y-2">
+                    <img src="Disha.jpeg" alt="Team"
+                        class="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-brand-blue-light object-cover">
+                    <h4 class="text-lg font-bold dark:text-white">Disha Yadav</h4>
+                    <p class="text-brand-blue-light text-sm font-semibold">Quality Analyst</p>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center border-t-4 border-brand-green transition-transform hover:-translate-y-2">
+                    <img src="Divyanshi.png" alt="Team"
+                        class="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-brand-green-light object-cover">
+                    <h4 class="text-lg font-bold dark:text-white">Divyanshi Shukla</h4>
+                    <p class="text-brand-green text-sm font-semibold">Logistics Lead</p>
+                </div>
+
+                <div
+                    class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg text-center border-t-4 border-brand-blue-light transition-transform hover:-translate-y-2">
+                    <img src="Chirag.png" alt="Team"
+                        class="w-20 h-20 rounded-full mx-auto mb-4 border-2 border-brand-blue-light object-cover">
+                    <h4 class="text-lg font-bold dark:text-white">Chirag Tiwari</h4>
+                    <p class="text-brand-blue-light text-sm font-semibold">Customer Relations</p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+    <footer class="bg-gray-800 text-gray-300 p-8 mt-16">
+        <div class="container mx-auto text-center">
+            <p class="text-2xl font-bold text-white mb-2">AquaSell</p>
+            <button onclick="window.location.href='admin.html'" style="background-color:white; 
+               color:black; 
+               padding:12px 24px; 
+               border:1px solid #ccc; 
+               border-radius:8px; 
+               font-size:16px; 
+               cursor:pointer;">
+                Admin Panal
+            </button>
+            <p class="mb-4">&copy; 2025 AquaSell. All rights reserved. Saving the world, one drop at a time.</p>
+            <div class="flex justify-center space-x-6">
+                <a href="#" class="nav-link hover:text-white" data-target="page-landing">Home</a>
+                <a href="#" class="hover:text-white">About</a>
+                <a href="https://2431648.github.io/Contact-Me/" class="hover:text-white">Contact</a>
+                <a href="#" class="hover:text-white">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="success-modal"
+        class="page-section hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl max-w-lg w-full p-6 relative animate-modal-pop">
+            <button id="modal-close-btn" class="absolute top-3 right-3 text-gray-400 hover:text-gray-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+            <div class="text-center">
+                <div class="w-16 h-16 bg-brand-green-light rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-10 h-10 text-brand-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Success!</h3>
+                <p id="modal-message" class="text-gray-600 text-center"></p>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html

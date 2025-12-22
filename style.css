@@ -1,0 +1,31 @@
+:root {
+    --primary: #0077b6;
+    --secondary: #00b4d8;
+    --accent: #90e0ef;
+    --bg: #f0f8ff;
+    --text: #023e8a;
+    --card-bg: #ffffff;
+}
+
+body { background: var(--bg); color: var(--text); font-family: sans-serif; margin: 0; }
+.hidden { display: none !important; }
+
+.admin-login-wrapper {
+    height: 100vh; display: flex; justify-content: center; align-items: center;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+.admin-box { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center; }
+.input-group input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid var(--accent); border-radius: 8px; box-sizing: border-box; }
+
+.dashboard-container { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+.admin-sidebar { background: white; padding: 20px; border-right: 1px solid var(--accent); }
+.main-content { padding: 30px; }
+
+.admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+.admin-card { background: white; padding: 20px; border-radius: 12px; border-top: 5px solid var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+
+.star-rating { color: #f1c40f; font-size: 1.2rem; }
+.btn-primary { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+.tab-btn { width: 100%; padding: 15px; text-align: left; background: none; border: none; cursor: pointer; font-weight: bold; color: var(--text); border-radius: 8px; }
+.tab-btn.active { background: var(--primary); color: white; }
