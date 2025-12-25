@@ -50,4 +50,35 @@
 
 .hover\:-translate-y-2:hover {
     transform: translateY(-0.5rem);
+
+}
+
+
+
+/* slider window  */
+
+
+.slider-container {
+    width: 90%;
+    max-width: 800px;
+    margin: 40px auto;
+    overflow: hidden;
+    border-radius: 25px; /* Your rounded corners */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.slider-track {
+    display: flex;
+    width: 100%;
+    /* We will control the transition speed here */
+    transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+}
+
+.slide img {
+    width: 100%;
+    display: block;
 }
