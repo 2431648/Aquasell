@@ -360,3 +360,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 }); // --- END OF DOMCONTENTLOADED ---
+
+
+
+
+
+// slider window 
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const track = document.querySelector('.slider-track');
+    const slides = document.querySelectorAll('.slide');
+    let index = 0;
+
+    // Safety check: only run if elements are found
+    if (track && slides.length > 0) {
+        setInterval(() => {
+            index++;
+            
+            // Loop back to the first slide
+            if (index >= slides.length) {
+                index = 0;
+            }
+            
+            // Apply the move
+            const offset = -index * 100;
+            track.style.transform = `translateX(${offset}%)`;
+        }, 3000); // 3 seconds
+    } else {
+        console.error("Slider track or slides not found. Check your HTML classes.");
+    }
+});
