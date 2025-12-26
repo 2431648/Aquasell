@@ -9,7 +9,7 @@ const sellerData = [
     { name: "Anjali Goshal", address: "45 Industrial Park", phone: "+91 95555-10202", waterSold: 1200 },
     { name: "Disha Ambani", address: "89 Suburban Rd", phone: "+91 84555-30303", waterSold: 450 },
     { name: "Akhil Kumar", address: "12 Downtown Blvd", phone: "+91 95841-10404", waterSold: 80 },
-    { name: "Sarah Khan", address: "Biran Road", phone: "+1 95415-10505", waterSold: 2100 }
+    { name: "Rimsha Khan", address: "Namak Factory", phone: "+91 79056-33604", waterSold: 2100 }
 ];
 
 const buyerData = [
@@ -96,4 +96,5 @@ function adminLogout() {
 // Auto-login if session exists
 if (sessionStorage.getItem('admin_auth_static') === 'true') {
     showDashboard();
+
 }
